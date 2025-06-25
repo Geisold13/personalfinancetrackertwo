@@ -1,1 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: Montserrat, sans-serif;
+  text-align: center;
+
+}
+h1 {
+  font-size: 72px;
+}
+
+h2 {
+  font-size: 64px;
+  letter-spacing: 1px;
+}
+
+h3 {
+  font-size: 40px;
+  letter-spacing: 1px;
+}
+
+h4 {
+  font-size: 32px;
+  letter-spacing: 1px;
+}
+
+h5 {
+  font-size: 24px;
+  letter-spacing: 1px;
+}
+
+h6 {
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+:root {
+  --primary-auth-color: rgba(245, 26, 54, 1);
+  --primary-auth-color-light: rgba(237, 94, 113, 1);
+
+}
