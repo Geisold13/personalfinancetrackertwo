@@ -1,0 +1,39 @@
+<div class="auth-container">
+  <div class="auth-information-container">
+    <h4 class="website-heading">Personal Finance Tracker 2</h4>
+    <div class="sign-up-sign-in-information-call-to-action-container" *ngIf="showSignInScreenCallToAction">
+      <h1 class="welcome-heading">Welcome Back!</h1>
+      <h5 class="welcome-subheading">Keep on saving, one step at a time.</h5>
+      <h5 class="welcome-subheading-two">Sign in to get back on track.</h5>
+      <div class="toggle-sign-in-sign-up-button-container">
+        <button class="toggle-sign-in-sign-up-button" (click)="toggleSignInScreen()" >SIGN IN</button>
+      </div>
+    </div>
+    <div class="sign-up-sign-in-information-call-to-action-container" *ngIf="showSignUpScreenCallToAction">
+      <h1 class="welcome-heading">Hey There!</h1>
+      <h5 class="welcome-subheading">Take control of your finances, one step at a time.</h5>
+      <h5 class="welcome-subheading-two">Sign up to get started.</h5>
+      <div class="toggle-sign-in-sign-up-button-container">
+        <button class="toggle-sign-in-sign-up-button" (click)="toggleSignUpScreen()" >SIGN UP</button>
+      </div>
+    </div>
+
+  </div>
+  <div class="auth-login-signup-container">
+    <div class="create-account-container" *ngIf="showSignUpScreen">
+      <h2 class="create-account-header">Create Account</h2>
+      <input class="sign-up-sign-in-input-field" type="text" placeholder="First Name">
+      <input class="sign-up-sign-in-input-field" type="text" placeholder="Last Name">
+      <input class="sign-up-sign-in-input-field" type="email" placeholder="Email">
+      <input class="sign-up-sign-in-input-field" type="password" placeholder="Password">
+      <input class="sign-up-sign-in-input-field" type="password" placeholder="Confirm Password">
+      <button class="sign-up-sign-in-button" >SIGN UP</button>
+    </div>
+    <div class="sign-in-container" *ngIf="showSignInScreen">
+      <h2 class="create-account-header">Sign In</h2>
+      <input class="sign-up-sign-in-input-field" type="email" placeholder="Email">
+      <input class="sign-up-sign-in-input-field" type="password" placeholder="Password">
+      <button class="sign-up-sign-in-button" >SIGN UP</button>
+    </div>
+  </div>
+</div>
