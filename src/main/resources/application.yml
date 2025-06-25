@@ -1,0 +1,19 @@
+
+spring:
+  application:
+    name: personal-finance-tracker-two
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/personal_finance_application_two
+    username: Geisold13
+    password: geballer1313B
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+      database: mysql
+      database-platform: org.hibernate.dialect.MySQL8Dialect
