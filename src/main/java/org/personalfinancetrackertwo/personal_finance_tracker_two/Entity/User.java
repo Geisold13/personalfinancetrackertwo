@@ -1,6 +1,7 @@
 package org.personalfinancetrackertwo.personal_finance_tracker_two.Entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,6 +16,11 @@ import java.util.List;
  */
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class User implements UserDetails {
 
     @Id
