@@ -17,6 +17,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * The SecurityConfig class configures the HTTP security settings of the Spring boot app.
+ * It defines how requests to the application should be secured and which routes should be
+ * accessible without authentication
+ *
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {

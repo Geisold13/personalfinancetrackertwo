@@ -12,12 +12,17 @@ spring:
       ddl-auto: update
     show-sql: true
     properties:
+      javax:
+        persistence:
+          validation:
+            mode: auto
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
       database: mysql
       database-platform: org.hibernate.dialect.MySQL8Dialect
-
+  messages:
+    basename: errormessages
   docker:
     compose:
       enabled: false
