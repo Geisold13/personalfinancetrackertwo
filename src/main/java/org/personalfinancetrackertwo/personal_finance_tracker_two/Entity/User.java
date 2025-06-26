@@ -1,7 +1,10 @@
 package org.personalfinancetrackertwo.personal_finance_tracker_two.Entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,11 +19,6 @@ import java.util.List;
  */
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
 public class User implements UserDetails {
 
     @Id
@@ -28,16 +26,16 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private long userId;
 
-    @Column(name = "user_first_name", nullable = false)
+    @Column(name = "user_first_name", length = 50, nullable = false)
     private String userFirstName;
 
-    @Column(name = "user_last_name", nullable = false)
+    @Column(name = "user_last_name", length = 50, nullable = false)
     private String userLastName;
 
-    @Column(name = "user_email", nullable = false)
+    @Column(name = "user_email", length = 256, nullable = false)
     private String userEmail;
 
-    @Column(name = "user_password", nullable = false)
+    @Column(name = "user_password", length = 256, nullable = false)
     private String userPassword;
 
     @Column(name = "user_role", nullable = false)
@@ -47,20 +45,100 @@ public class User implements UserDetails {
     @Column(name = "user_creation_date", nullable = false)
     private Timestamp userCreationDate;
 
-    @Column(name = "user_last_sign_in", nullable = false)
+    @Column(name = "user_last_sign_in")
     private Timestamp userLastSignIn;
 
-    @Column(name = "user_last_sign_out", nullable = false)
+    @Column(name = "user_last_sign_out")
     private Timestamp userLastSignOut;
 
+    public User(long userId, String userFirstName, String userLastName, String userEmail, String userPassword, Role userRole, Timestamp userCreationDate, Timestamp userLastSignIn, Timestamp userLastSignOut) {
+        this.userId = userId;
+        this.userFirstName = userFirstName;
+        this.userLastName = userLastName;
+        this.userEmail = userEmail;
+        this.userPassword = userPassword;
+        this.userRole = userRole;
+        this.userCreationDate = userCreationDate;
+        this.userLastSignIn = userLastSignIn;
+        this.userLastSignOut = userLastSignOut;
+    }
 
+    public User() {
 
+    }
 
+    public long getUserId() {
+        return userId;
+    }
 
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 
+    public String getUserFirstName() {
+        return userFirstName;
+    }
 
+    public void setUserFirstName(String userFirstName) {
+        this.userFirstName = userFirstName;
+    }
 
+    public String getUserLastName() {
+        return userLastName;
+    }
 
+    public void setUserLastName(String userLastName) {
+        this.userLastName = userLastName;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+    public Role getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(Role userRole) {
+        this.userRole = userRole;
+    }
+
+    public Timestamp getUserCreationDate() {
+        return userCreationDate;
+    }
+
+    public void setUserCreationDate(Timestamp userCreationDate) {
+        this.userCreationDate = userCreationDate;
+
+    }
+
+    public Timestamp getUserLastSignIn() {
+        return userLastSignIn;
+    }
+
+    public void setUserLastSignIn(Timestamp userLastSignIn) {
+        this.userLastSignIn = userLastSignIn;
+    }
+
+    public Timestamp getUserLastSignOut() {
+        return userLastSignOut;
+    }
+
+    public void setUserLastSignOut(Timestamp userLastSignOut) {
+        this.userLastSignOut = userLastSignOut;
+    }
 
 
 
