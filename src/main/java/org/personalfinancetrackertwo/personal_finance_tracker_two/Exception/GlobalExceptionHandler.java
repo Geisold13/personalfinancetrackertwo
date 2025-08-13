@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<CustomErrorResponse> handleAuthenticationException(AuthenticationException ex) {
+    @ExceptionHandler(CustomAuthenticationException.class)
+    public ResponseEntity<CustomErrorResponse> handleAuthenticationException(CustomAuthenticationException ex) {
         CustomErrorResponse response = new CustomErrorResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED.value());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
 
