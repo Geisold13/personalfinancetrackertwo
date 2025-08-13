@@ -1,5 +1,6 @@
 package org.personalfinancetrackertwo.personal_finance_tracker_two.Controller;
 
+import jakarta.validation.Valid;
 import org.personalfinancetrackertwo.personal_finance_tracker_two.Entity.User;
 import org.personalfinancetrackertwo.personal_finance_tracker_two.Payload.Request.AuthenticationRequest;
 import org.personalfinancetrackertwo.personal_finance_tracker_two.Payload.Request.RegistrationRequest;
@@ -41,8 +42,8 @@ public class AuthenticationController {
      * @param registrationRequest - incoming registration data.
      * @return - ResponseEntity with a registration response and http status.
      */
-    @PostMapping("/register")
-    public ResponseEntity<RegistrationResponse> register(@RequestBody RegistrationRequest registrationRequest) {
+    @PostMapping("/auth/register")
+    public ResponseEntity<RegistrationResponse> register(@Valid @RequestBody RegistrationRequest registrationRequest) {
 
         // registers new user and then returns appropriate response entity with success message and http response
        authenticationService.register(registrationRequest);
@@ -54,8 +55,8 @@ public class AuthenticationController {
      * @param authenticationRequest - incoming sign in data.
      * @return - ResponseEntity with an authentication response that has a jwt and message.
      */
-    @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
+    @PostMapping("/auth/authenticate")
+    public ResponseEntity<AuthenticationResponse> authenticate(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
 
         // grabs authenticated user and creates a jwt with that user
         User authUser = authenticationService.authenticate(authenticationRequest);

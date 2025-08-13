@@ -2,12 +2,11 @@ package org.personalfinancetrackertwo.personal_finance_tracker_two.Service;
 
 import org.personalfinancetrackertwo.personal_finance_tracker_two.Entity.Role;
 import org.personalfinancetrackertwo.personal_finance_tracker_two.Entity.User;
-import org.personalfinancetrackertwo.personal_finance_tracker_two.Exception.AuthenticationException;
+import org.personalfinancetrackertwo.personal_finance_tracker_two.Exception.CustomAuthenticationException;
 import org.personalfinancetrackertwo.personal_finance_tracker_two.Exception.EmailAlreadyExistsException;
 import org.personalfinancetrackertwo.personal_finance_tracker_two.Payload.Request.AuthenticationRequest;
 import org.personalfinancetrackertwo.personal_finance_tracker_two.Payload.Request.RegistrationRequest;
 import org.personalfinancetrackertwo.personal_finance_tracker_two.Repository.UserRepository;
-import org.personalfinancetrackertwo.personal_finance_tracker_two.Utility.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -50,6 +49,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new EmailAlreadyExistsException("Email already exists.");
 
         } else {
+
+            System.out.println(registrationRequest.getPassword());
             // otherwise, creates a new User entity and sets its values to the values within the registrationRequest
             // along with the role and creation date.
             User newUser = new User();
@@ -59,7 +60,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             newUser.setUserPassword(passwordEncoder.encode(registrationRequest.getPassword()));
             newUser.setUserRole(Role.USER);
             newUser.setUserCreationDate(new Timestamp(System.currentTimeMillis()));
-
+            System.out.println(registrationRequest.getPassword());
+            System.out.println(newUser.getPassword());
             // saves the new user
             userRepository.save(newUser);
         }
@@ -76,13 +78,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         // fetches the user from the repository by email if it exists, otherwise throws an exception
         User authUser = userRepository.findByUserEmail(authenticationRequest.getEmail())
-                .orElseThrow(() -> new AuthenticationException("User not found."));
+                .orElseThrow(() -> new CustomAuthenticationException("User not found."));
 
         // tries to authenticate the user, if not, catches a BadCredentialsException and throws a custom exception
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authUser.getUserEmail(), authUser.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()));
         } catch (BadCredentialsException e) {
-           throw new AuthenticationException("Invalid username or password.");
+           throw new CustomAuthenticationException("Incorrect password.");
         }
 
         // if user exists and credentials are valid, then the last sign in is updated, and the user is saved

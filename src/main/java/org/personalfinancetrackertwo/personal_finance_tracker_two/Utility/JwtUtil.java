@@ -26,7 +26,8 @@ import static io.jsonwebtoken.io.Decoders.BASE64;
 public class JwtUtil {
 
     // This is a secret key that is a 32 character or 256 bit key that is pulled from an environment variable
-    private static final String JWT_SECRET = System.getenv("JWT_SECRET_KEY");
+    private static final String JWT_SECRET = "Bm2yOs7bSR7wwJUF3ZlJDf8b460/DZKEDRa1UiPPx2IutqE9FQB3ERrWzngSjqvu";
+
 
     /**
      * Responsible for generating the Json Web Token (JWT).
