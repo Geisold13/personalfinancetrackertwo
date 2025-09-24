@@ -1,0 +1,190 @@
+<div class="transaction">
+  <div class="transaction__main">
+    <div class="transaction__table-wrapper">
+      <div class="transaction__table">
+        <div class="transaction__headers">
+          <div class="transaction__header">Type</div>
+          <div class="transaction__header">Name</div>
+          <div class="transaction__header">Amount</div>
+          <div class="transaction__header">Date</div>
+          <div class="transaction__header">Category</div>
+          <div class="transaction__header border-right">Description</div>
+        </div>
+        <div class="transaction__entry" *ngFor="let transaction of transactions; let i = index" (click)="selectTransactionRow(i)" [class.selected] = "selectedTransactionRowIndex === i">
+          <div class="transaction__entry-data">{{transaction.transactionType}}</div>
+          <div class="transaction__entry-data">{{transaction.transactionName}}</div>
+          <div class="transaction__entry-data">{{transaction.transactionAmount}}</div>
+          <div class="transaction__entry-data">{{transaction.transactionDate}}</div>
+          <div class="transaction__entry-data">{{transaction.transactionCategory}}</div>
+          <div class="transaction__entry-data border-right">{{transaction.transactionDescription}}</div>
+        </div>
+      </div>
+      <div class="transaction__controls">
+        <div class="transaction__crud-container">
+          <div class="transaction__crud">
+            <button class="transaction__crud-button" [disabled]="transactionUIState.isCrudButtonDisabled" (click)="onSaveTransactions()">Save Transactions</button>
+            <button class="transaction__crud-button" [disabled]="transactionUIState.isCrudButtonDisabled"  (click)="onDeleteTransaction()">Delete Transaction</button>
+            <button class="transaction__crud-button" [disabled]="transactionUIState.isCrudButtonDisabled"  (click)="onEditTransaction()">Edit Transaction</button>
+            <button class="transaction__crud-button generate-report__button">Generate Report</button>
+          </div>
+          <div class="transaction__crud-messages">
+            <small class="success" *ngIf="transactionUIState.messages.showInSync">{{transactionMessages.transactionInSync}}</small>
+            <small class="success" *ngIf="transactionUIState.messages.showSaveSuccess">{{transactionMessages.saveTransactionsSuccess}}</small>
+            <small class="success" *ngIf="transactionUIState.messages.showDeleteSuccess">{{transactionMessages.deleteTransactionSuccess}}</small>
+            <small class="inform" *ngIf="transactionUIState.messages.showSaveNotNecessary">{{transactionMessages.saveTransactionNotNecessary}}</small>
+            <small class="error" *ngIf="transactionUIState.messages.showEditError">{{transactionMessages.editTransactionError}}</small>
+            <small class="error" *ngIf="transactionUIState.messages.showNotInSync">{{transactionMessages.transactionNotInSync}}</small>
+            <small class="error" *ngIf="transactionUIState.messages.showDeleteError">{{transactionMessages.deleteTransactionError}}</small>
+          </div>
+        </div>
+
+      </div>
+      <div class="transaction__forms">
+        <form class="transaction__form" [formGroup]="addTransaction" (ngSubmit)="onTransactionSubmit()">
+          <h6 class="transaction__form-heading">Add Transaction</h6>
+          <div class="transaction__form-inputs">
+            <div class="transaction__form-column">
+              <select formControlName="transactionType" class="transaction__form-field">
+                <option value="" disabled selected>Select a Type</option>
+                <option value="Income">Income</option>
+                <option value="Expense">Expense</option>
+              </select>
+              <input formControlName="transactionName" type="text" placeholder="Name" class="transaction__form-field">
+              <input formControlName="transactionAmount" type="number" placeholder="Amount" class="transaction__form-field">
+            </div>
+            <div class="transaction__form-column">
+              <input formControlName="transactionDate" type="date" placeholder="Date" class="transaction__form-field">
+              <select formControlName="transactionCategory" class="transaction__form-field">
+                <option value="" disabled selected>Select a Category</option>
+                <option value="Salary">Salary</option>
+                <option value="Savings">Savings</option>
+                <option value="Side Hustle">Side Hustle</option>
+                <option value="Investment">Investment</option>
+                <option value="Rent">Rent</option>
+                <option value="Groceries">Groceries</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Internet">Internet</option>
+                <option value="Transportation">Transportation</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Dining">Dining</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Subscriptions">Subscriptions</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Fitness">Fitness</option>
+                <option value="Travel">Travel</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Insurance">Insurance</option>
+              </select>
+            <input formControlName="transactionDescription" type="text" placeholder="Description" class="transaction__form-field">
+            </div>
+          </div>
+          <div class="transaction__form-buttons">
+            <button type="submit" class="transaction__form-button submit">Submit</button>
+            <button type="reset" class="transaction__form-button reset" (click)="onTransactionReset()">Reset</button>
+          </div>
+          <div class="transaction__form-messages">
+            <small class="error" *ngIf="transactionUIState.messages.showFormError">{{transactionMessages.addTransactionFormError}}</small>
+            <small class="success" *ngIf="transactionUIState.messages.showFormSuccess">{{transactionMessages.addTransactionFormSuccess}}</small>
+            <small class="error" *ngIf="transactionUIState.messages.showFormTypeAmountMismatch">{{transactionMessages.addTransactionFormTypeAmountMismatch}}</small>
+          </div>
+        </form>
+        <div class="transaction__sort-filter">
+          <div class="transaction__sorting">
+            <h6 class="transaction__sorting-header">Sort Transactions</h6>
+            <div class="transaction__sorting-controls-container">
+              <div class="transaction__sorting-controls">
+                <select class="transaction__sorting-selector" [(ngModel)]="transactionSortSelection" [disabled]="transactionUIState.sort.isSortSelectionDisabled" (click)="onClickSortSelector()">
+                  <option value="" selected disabled >Select Sorting Type</option>
+                  <option value="type">Type GROUPED</option>
+                  <option value="name-alpha">Name ALPHA</option>
+                  <option value="amount-asc">Amount ASC</option>
+                  <option value="amount-desc">Amount DESC</option>
+                  <option value="date-newest">Date NEWEST</option>
+                  <option value="date-oldest">Date OLDEST</option>
+                  <option value="category-alpha">Category ALPHA</option>
+                </select>
+              <button class="transaction__sorting-button submit" [disabled]="transactionUIState.sort.isSortButtonDisabled" (click)="onSort()">Sort</button>
+              </div>
+              <div class="transaction__sorting-control-messages">
+              </div>
+            </div>
+            <h6 class="transaction__filtering-header">Filter Transactions</h6>
+            <div class="transaction__filtering-columns">
+              <div class="transaction__filtering-column">
+                <select class="transaction__form-field" [(ngModel)]="transactionFilters.type">
+                  <option value="" selected disabled>Select Type</option>
+                  <option value="Income">Income</option>
+                  <option value="Expense">Expense</option>
+                </select>
+                <input type="number" placeholder="Min Amount" class="transaction__form-field" [(ngModel)]="transactionFilters.minAmount">
+                <input type="date" class="transaction__form-field" [(ngModel)]="transactionFilters.startDate">
+                <small style="margin-top: 5px">Start Date</small>
+              </div>
+              <div class="transaction__filtering-column">
+                <select class="transaction__form-field" [(ngModel)]="transactionFilters.category">
+                  <option value="" disabled selected>Select a Category</option>
+                  <option value="Salary">Salary</option>
+                  <option value="Savings">Savings</option>
+                  <option value="Side Hustle">Side Hustle</option>
+                  <option value="Investment">Investment</option>
+                  <option value="Rent">Rent</option>
+                  <option value="Groceries">Groceries</option>
+                  <option value="Utilities">Utilities</option>
+                  <option value="Internet">Internet</option>
+                  <option value="Transportation">Transportation</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Dining">Dining</option>
+                  <option value="Clothing">Clothing</option>
+                  <option value="Subscriptions">Subscriptions</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Fitness">Fitness</option>
+                  <option value="Travel">Travel</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Insurance">Insurance</option>
+                </select>
+                <input type="number" placeholder="Max Amount" class="transaction__form-field" [(ngModel)]="transactionFilters.maxAmount">
+                <input type="date" class="transaction__form-field" [(ngModel)]="transactionFilters.endDate">
+                <small style="margin-top: 5px">End Date</small>
+              </div>
+            </div>
+            <div class="transaction__filtering-buttons">
+              <button class="transaction__filtering-button submit" (click)="onFilter()">Filter</button>
+              <button class="transaction__filtering-button reset" (click)="onFilterSortReset()">Reset</button>
+            </div>
+          </div>
+        </div>
+        <div class="transaction__stats">
+          <div class="transaction__stats-column">
+            <div class="transaction__stat">
+              <p class="transaction__stat-label">Total Income</p>
+              <h4 class="success">+{{transactionStats.totalIncome}}</h4>
+            </div>
+            <div class="transaction__stat">
+              <p class="transaction__stat-label">Total Transactions</p>
+              <h4>{{transactionStats.totalTransactions}}</h4>
+            </div>
+            <div class="transaction__stat">
+              <p class="transaction__stat-label">Net Savings</p>
+              <h4 class="success">{{transactionStats.netSavings}}</h4>
+            </div>
+          </div>
+          <div class="transaction__stats-column">
+            <div class="transaction__stat">
+              <p class="transaction__stat-label">Total Expenses</p>
+              <h4 class="error">{{transactionStats.totalExpenses}}</h4>
+            </div>
+            <div class="transaction__stat">
+              <p class="transaction__stat-label">Average Expense</p>
+              <h4 class="error">{{transactionStats.averageExpense}}</h4>
+            </div>
+            <div class="transaction__stat">
+              <p class="transaction__stat-label">Top Expense Category</p>
+              <h4>{{transactionStats.topExpenseCategory}}</h4>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
