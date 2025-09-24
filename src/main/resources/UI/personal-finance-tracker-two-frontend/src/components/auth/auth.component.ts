@@ -171,8 +171,6 @@ export class AuthComponent implements OnInit {
 
         next: (response:any):void => {
           this.signinSuccessResponseMessage = response.message;
-          this.userService.setCurrentUser(response.user);
-          console.log(this.userService.getCurrentUser());
           this.signIn(response.token);
         },
 

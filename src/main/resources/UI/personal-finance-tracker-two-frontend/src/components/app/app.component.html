@@ -6,18 +6,18 @@
   <div class="navigation-container"  *ngIf="jwtService.isTokenValid()">
     <h5 class="loggedin-user">Welcome {{user}}!</h5>
    <nav class="navigation">
-      <a routerLink="/dashboard" class="navigation-button">Dashboard</a>
-      <a routerLink="/transactions" class="navigation-button">Transactions</a>
-      <a routerLink="/budgets" class="navigation-button">Budgets</a>
-      <a routerLink="/reports" class="navigation-button">Reports</a>
-      <a routerLink="/goals" class="navigation-button">Goals</a>
-      <a routerLink="/notifications" class="navigation-button">Notifications</a>
-      <a routerLink="/helping" class="navigation-button">Help</a>
-     <a routerLink="/about" class="navigation-button">About</a>
+      <a routerLink="/dashboard" class="navigation-button">Dashboard (Not Finished)</a>
+      <a routerLink="/transactions" class="navigation-button">Transactions (Almost Finished)</a>
+      <a routerLink="/budgets" class="navigation-button">Budgets (Not Started)</a>
+      <a routerLink="/reports" class="navigation-button">Reports (Not Finished)</a>
+      <a routerLink="/goals" class="navigation-button">Goals (Not Started)</a>
+      <a routerLink="/notifications" class="navigation-button">Notifications (Not Started)</a>
+      <a routerLink="/helping" class="navigation-button">Help (Not Started)</a>
+     <a routerLink="/about" class="navigation-button">About (Not Started)</a>
     </nav>
    <div class="navigation-account-buttons">
      <a routerLink="/auth" class="navigation-button" (click)="signout()">Sign Out</a>
-      <a routerLink="/settings" class="navigation-button">Settings</a>
+      <a routerLink="/settings" class="navigation-button">Settings (Not Started)</a>
      <h6 class="app-heading">Personal Finance Tracker 2</h6>
      <h6 class="app-heading">Created by Gage Eisold</h6>
 

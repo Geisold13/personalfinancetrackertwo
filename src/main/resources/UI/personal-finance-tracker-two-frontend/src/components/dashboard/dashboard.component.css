@@ -1,6 +1,7 @@
 
 .dashboard-container {
-  width: 100%;
+  width: 80%;
+  float: right;
   height: 100vh;
 
   display: flex;
@@ -12,6 +13,7 @@
 
 .dashboard-content-container {
   width: 100%;
+  border: 1px solid black;
   height: 100vh;
 }
 
