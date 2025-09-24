@@ -4,19 +4,18 @@ import jakarta.validation.Valid;
 import org.personalfinancetrackertwo.personal_finance_tracker_two.Entity.User;
 import org.personalfinancetrackertwo.personal_finance_tracker_two.Payload.Request.AuthenticationRequest;
 import org.personalfinancetrackertwo.personal_finance_tracker_two.Payload.Request.RegistrationRequest;
+import org.personalfinancetrackertwo.personal_finance_tracker_two.Payload.Response.AuthUserResponse;
 import org.personalfinancetrackertwo.personal_finance_tracker_two.Payload.Response.AuthenticationResponse;
 import org.personalfinancetrackertwo.personal_finance_tracker_two.Payload.Response.RegistrationResponse;
 import org.personalfinancetrackertwo.personal_finance_tracker_two.Service.AuthenticationService;
+import org.personalfinancetrackertwo.personal_finance_tracker_two.Service.UserService;
 import org.personalfinancetrackertwo.personal_finance_tracker_two.Utility.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * AuthenticationController is responsible for handling HTTP requests to the /api/register and /api/authenticate
@@ -28,12 +27,14 @@ public class AuthenticationController {
 
     // dependencies are declared
     private final AuthenticationService authenticationService;
+    private final UserService userService;
     private final JwtUtil jwtUtil;
 
     // dependencies are injected via constructor
     @Autowired
-    public AuthenticationController(AuthenticationService authenticationService, JwtUtil jwtUtil) {
+    public AuthenticationController(AuthenticationService authenticationService, UserService userService, JwtUtil jwtUtil) {
         this.authenticationService = authenticationService;
+        this.userService = userService;
         this.jwtUtil = jwtUtil;
     }
 
@@ -66,5 +67,13 @@ public class AuthenticationController {
         // returns appropriate ResponseEntity with success message and http status
         return ResponseEntity.status(HttpStatus.OK).body(new AuthenticationResponse(jwt, userFirstLast, "User Logged in Successfully!"));
 
+    }
+
+    @GetMapping("/auth/user")
+    public ResponseEntity<AuthUserResponse> getAuthUserName() {
+
+        User authUser = userService.getAuthenticatedUser();
+        String firstLast = authUser.getUserFirstName() + " " + authUser.getUserLastName();
+        return ResponseEntity.status(HttpStatus.OK).body(new AuthUserResponse(firstLast));
     }
 }
