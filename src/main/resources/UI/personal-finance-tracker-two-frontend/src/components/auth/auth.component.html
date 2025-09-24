@@ -22,18 +22,37 @@
   <div class="auth-login-signup-container">
     <div class="create-account-container" *ngIf="showSignUpScreen">
       <h2 class="create-account-header">Create Account</h2>
-      <input class="sign-up-sign-in-input-field" type="text" placeholder="First Name">
-      <input class="sign-up-sign-in-input-field" type="text" placeholder="Last Name">
-      <input class="sign-up-sign-in-input-field" type="email" placeholder="Email">
-      <input class="sign-up-sign-in-input-field" type="password" placeholder="Password">
-      <input class="sign-up-sign-in-input-field" type="password" placeholder="Confirm Password">
-      <button class="sign-up-sign-in-button" >SIGN UP</button>
+      <form class="sign-up-form" [formGroup]="signupForm" (ngSubmit)="onSignUpSubmit()">
+        <input formControlName="firstName" class="sign-up-sign-in-input-field default-border" type="text" placeholder="First Name" [ngClass]="getSigninSignupInputValidation(signupForm.get('firstName'))">
+        <small class="error" *ngIf="signupForm.get('firstName')?.hasError('minlength') || signupForm.get('firstName')?.hasError('maxlength')">First name must be between 2 and 50 characters.</small>
+        <small class="error" *ngIf="signupForm.get('firstName')?.hasError('pattern')">First name has invalid format.</small>
+        <input formControlName="lastName" class="sign-up-sign-in-input-field default-border" type="text" placeholder="Last Name" [ngClass]="getSigninSignupInputValidation(signupForm.get('lastName'))">
+        <small class="error" *ngIf="signupForm.get('lastName')?.hasError('minlength') || signupForm.get('lastName')?.hasError('maxlength')">Last name must be between 2 and 50 characters.</small>
+        <small class="error" *ngIf="signupForm.get('lastName')?.hasError('pattern')">Last name has invalid format.</small>
+        <input formControlName="email" class="sign-up-sign-in-input-field default-border" type="email" placeholder="Email" [ngClass]="getSigninSignupInputValidation(signupForm.get('email'))">
+        <small class="error" *ngIf="signupForm.get('email')?.hasError('minlength') || signupForm.get('email')?.hasError('maxlength')">Email must be between 6 and 256 characters.</small>
+        <small class="error" *ngIf="signupForm.get('email')?.hasError('email')">Email format is invalid.</small>
+        <input formControlName="password" class="sign-up-sign-in-input-field default-border" type="password" placeholder="Password" [ngClass]="getSigninSignupInputValidation(signupForm.get('password'))">
+        <small class="error" *ngIf="signupForm.get('password')?.hasError('minlength') || signupForm.get('password')?.hasError('maxlength')">Password must be between 8 and 256 characters.</small>
+        <input formControlName="confirmPassword" class="sign-up-sign-in-input-field default-border" type="password" placeholder="Confirm Password" [ngClass]="comparePasswordsValidation(signupForm.get('confirmPassword'), signupForm.get('password'))">
+        <small class="success" *ngIf="showPasswordValidationSuccessMessage(signupForm.get('password'), signupForm.get('confirmPassword'))">Passwords Match!</small>
+        <small class="error" *ngIf="showPasswordValidationErrorMessage(signupForm.get('password'), signupForm.get('confirmPassword'))">Passwords do not Match.</small>
+      </form>
+      <button class="sign-up-sign-in-button" (click)="onSignUpSubmit()">SIGN UP</button>
+      <small class="success add-margin-bottom larger-font" *ngIf="signupSuccessResponseMessage">{{signupSuccessResponseMessage}}</small>
+      <small class="error add-margin-bottom larger-font" *ngIf="signupErrorResponseMessage">{{signupErrorResponseMessage}}</small>
     </div>
     <div class="sign-in-container" *ngIf="showSignInScreen">
       <h2 class="create-account-header">Sign In</h2>
-      <input class="sign-up-sign-in-input-field" type="email" placeholder="Email">
-      <input class="sign-up-sign-in-input-field" type="password" placeholder="Password">
-      <button class="sign-up-sign-in-button" >SIGN IN</button>
+      <form class="sign-in-form" [formGroup]="signinForm" (ngSubmit)="onSignInSubmit()">
+        <input formControlName="email" class="sign-up-sign-in-input-field default-border" type="email" placeholder="Email" [ngClass]="getSigninSignupInputValidation(signinForm.get('email'))">
+        <small class="error" *ngIf="signinForm.get('email')?.hasError('minlength') || signinForm.get('email')?.hasError('maxlength')">Email must be between 6 and 256 characters.</small>
+        <small class="error" *ngIf="signinForm.get('email')?.hasError('email')">Email format is invalid.</small>
+        <input formControlName="password" class="sign-up-sign-in-input-field default-border" type="password" placeholder="Password" [ngClass]="getSigninSignupInputValidation(signinForm.get('password'))">
+        <small class="error" *ngIf="signinForm.get('password')?.hasError('minlength') || signinForm.get('password')?.hasError('maxlength')">Password must be between 8 and 256 characters.</small>
+      </form>
+      <button class="sign-up-sign-in-button" (click)="onSignInSubmit()" >SIGN IN</button>
+      <small class="error add-margin-bottom larger-font" *ngIf="signinErrorResponseMessage">{{signinErrorResponseMessage}}</small>
     </div>
   </div>
 </div>
