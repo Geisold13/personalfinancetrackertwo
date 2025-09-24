@@ -1,24 +1,19 @@
 import { Injectable } from '@angular/core';
 import {environment} from "../../environments/environment";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private currentUserSubject = new BehaviorSubject<any>(null);
-  currentUser$ = this.currentUserSubject.asObservable();
+  private authUserApiUrl: string = `${environment.API_BASE_URL}/auth/user`;
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-
-  getCurrentUser(): string {
-    return this.currentUserSubject.value;
-  }
-
-  setCurrentUser(user: string) {
-    this.currentUserSubject.next(user);
+  getAuthUser(): Observable<any> {
+    return this.http.get(`${this.authUserApiUrl}`, {withCredentials: true});
   }
 
 }
