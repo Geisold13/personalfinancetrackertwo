@@ -3,10 +3,14 @@
   margin: 0 auto;
   padding: 0;
   box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+html, body {
+  height: 100%;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: Montserrat, sans-serif;
   text-align: center;
 
 }
@@ -39,8 +43,43 @@ h6 {
   letter-spacing: 1px;
 }
 
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a:visited {
+  color: white;
+}
+/* When an input tag is focused, it gets rid of the default black outline and border, so other css styling can take priority */
+input:focus {
+  outline: none;
+  border: none;
+}
+
 :root {
   --primary-auth-color: rgba(245, 26, 54, 1);
   --primary-auth-color-light: rgba(237, 94, 113, 1);
 
+  --primary-auth-color-two: rgba(41, 100, 18, 1);
+  --primary-auth-color-light-two: rgba(61, 182, 31, 1);
+
+  --primary-auth-color-three: rgba(14, 45, 100, 1);
+  --primary-auth-color-light-three: rgba(32, 90, 191, 1);
+
 }
+
+.error {
+  color: darkred;
+  font-weight: bold;
+}
+
+.success {
+  color: lightgreen;
+  font-weight: bold;
+}
+
+/*
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+*/

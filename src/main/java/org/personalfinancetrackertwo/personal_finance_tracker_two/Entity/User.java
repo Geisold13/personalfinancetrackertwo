@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(name="user_id", nullable = false)
     private long userId;
 
     @Column(name = "user_first_name", length = 50, nullable = false)
@@ -52,7 +53,10 @@ public class User implements UserDetails {
     @Column(name = "user_last_sign_out")
     private Timestamp userLastSignOut;
 
-    public User(long userId, String userFirstName, String userLastName, String userEmail, String userPassword, Role userRole, Timestamp userCreationDate, Timestamp userLastSignIn, Timestamp userLastSignOut) {
+    @OneToMany(mappedBy = "transactionUser")
+    private List<Transaction> transactions;
+
+    public User(long userId, String userFirstName, String userLastName, String userEmail, String userPassword, Role userRole, Timestamp userCreationDate, Timestamp userLastSignIn, Timestamp userLastSignOut, List<Transaction> transactions) {
         this.userId = userId;
         this.userFirstName = userFirstName;
         this.userLastName = userLastName;
@@ -62,6 +66,12 @@ public class User implements UserDetails {
         this.userCreationDate = userCreationDate;
         this.userLastSignIn = userLastSignIn;
         this.userLastSignOut = userLastSignOut;
+        this.transactions = transactions;
+    }
+
+    public User(String userEmail, String userPassword) {
+        this.userEmail = userEmail;
+        this.userPassword = userPassword;
     }
 
     public User() {
@@ -141,7 +151,13 @@ public class User implements UserDetails {
         this.userLastSignOut = userLastSignOut;
     }
 
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
 
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

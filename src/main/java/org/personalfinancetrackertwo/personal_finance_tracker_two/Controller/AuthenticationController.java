@@ -61,9 +61,10 @@ public class AuthenticationController {
         // grabs authenticated user and creates a jwt with that user
         User authUser = authenticationService.authenticate(authenticationRequest);
         String jwt = jwtUtil.generateJwt(authUser);
+        String userFirstLast = authUser.getUserFirstName() + " " + authUser.getUserLastName();
 
         // returns appropriate ResponseEntity with success message and http status
-        return ResponseEntity.status(HttpStatus.OK).body(new AuthenticationResponse(jwt, "User Logged in Successfully!"));
+        return ResponseEntity.status(HttpStatus.OK).body(new AuthenticationResponse(jwt, userFirstLast, "User Logged in Successfully!"));
 
     }
 }
