@@ -56,7 +56,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "transactionUser")
     private List<Transaction> transactions;
 
-    public User(long userId, String userFirstName, String userLastName, String userEmail, String userPassword, Role userRole, Timestamp userCreationDate, Timestamp userLastSignIn, Timestamp userLastSignOut, List<Transaction> transactions) {
+    @OneToMany(mappedBy = "transactionReportUser")
+    private List<TransactionReport> transactionReports;
+
+    public User(long userId, String userFirstName, String userLastName, String userEmail, String userPassword, Role userRole, Timestamp userCreationDate, Timestamp userLastSignIn, Timestamp userLastSignOut, List<Transaction> transactions, List<TransactionReport> transactionReports) {
         this.userId = userId;
         this.userFirstName = userFirstName;
         this.userLastName = userLastName;
@@ -67,6 +70,7 @@ public class User implements UserDetails {
         this.userLastSignIn = userLastSignIn;
         this.userLastSignOut = userLastSignOut;
         this.transactions = transactions;
+        this.transactionReports = transactionReports;
     }
 
     public User(String userEmail, String userPassword) {
@@ -157,6 +161,14 @@ public class User implements UserDetails {
 
     public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
+    }
+
+    public List<TransactionReport> getTransactionReports() {
+        return transactionReports;
+    }
+
+    public void setTransactionReports(List<TransactionReport> transactionReports) {
+        this.transactionReports = transactionReports;
     }
 
     @Override

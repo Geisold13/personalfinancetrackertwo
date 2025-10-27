@@ -2,7 +2,7 @@
   font-family: Arial, sans-serif;
 }
 
-input, select {
+input, select, textarea {
   border: none;
   box-shadow: 0 0 5px gray;
 }
@@ -348,6 +348,72 @@ input, select {
   font-family: Arial, sans-serif;
 }
 
+.transaction__report-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  width: 80%;
+  height: 100%;
+
+  background-color: rgba(0, 0, 0, 0.21);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.transaction__report {
+  width: auto;
+  height: auto;
+
+  padding: 25px;
+
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px gray;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.transaction__report-header {
+  font-weight: lighter;
+}
+
+
+.transaction__report-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.transaction__report-input {
+  width: 300px;
+  height: 30px;
+
+  padding-left: 5px;
+  margin-top: 10px;
+}
+
+.transaction__report-textarea {
+  width: 300px;
+  height: 120px;
+  resize: none;
+  outline: none;
+
+  padding-left: 5px;
+  padding-top: 5px;
+  margin-top: 10px;
+}
+
+.transaction__report-button {
+  margin-top: 10px;
+  width: 300px;
+  height: 30px;
+
+  border: none;
+}
+
 .transaction__crud-button:hover {
   background-color: rgba(174, 218, 124, 0.8);
 }
@@ -395,16 +461,16 @@ input, select {
   padding-right: 20px;
 }
 .submit {
-  background-color: rgba(39, 136, 245, 0.8);
+  background-color: rgba(143, 167, 115, 0.8);
   border: none;
 }
 
 .submit:hover {
-  background-color: rgba(154, 200, 252, 0.8);
+  background-color: rgba(174, 218, 124, 0.8);
 }
 
 .submit:active {
-  background-color: rgba(0, 53, 112, 0.8);
+  background-color: rgba(58, 72, 43, 0.8);
 }
 
 .reset {

@@ -3,6 +3,7 @@ package org.personalfinancetrackertwo.personal_finance_tracker_two.Entity;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "transactions")

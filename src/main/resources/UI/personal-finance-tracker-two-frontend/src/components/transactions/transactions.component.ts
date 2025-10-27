@@ -7,6 +7,7 @@ import {TransactionstateService} from "../../services/transactionstate-service/t
 import {MatSelectModule} from "@angular/material/select";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {TransactionreportService} from "../../services/transactionreport-service/transactionreport.service";
 
 @Component({
   selector: 'app-transactions',
@@ -24,6 +25,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 export class TransactionsComponent implements OnInit{
 
   addTransaction: FormGroup;
+  generateReport: FormGroup;
   transactions: Transaction[] = [];
   selectedTransactionRowIndex: number | null = null;
   transactionSortSelection: string = "";
@@ -71,7 +73,14 @@ export class TransactionsComponent implements OnInit{
       showSaveNotNecessary: false,
       showFormTypeAmountMismatch: false,
       showBeingSorted: false,
-      showSortSelectionDisabled: false
+      showSortSelectionDisabled: false,
+      showGenerateReportSuccess: false,
+      showGenerateReportError: false,
+      showGenerateReportErrorNoName: false
+
+    },
+    popup: {
+      showGenerateReport: false
     }
   };
 
@@ -86,10 +95,14 @@ export class TransactionsComponent implements OnInit{
     transactionNotInSync: "You have unsaved changes. Save changes for stats to update.",
     saveTransactionsSuccess: "Transactions Saved Successfully!",
     saveTransactionNotNecessary: "Transactions already up to date.",
-    addTransactionFormTypeAmountMismatch: "Amount needs to be > 0 for Income type & Amount needs to be < 0 for Expense type."
+    addTransactionFormTypeAmountMismatch: "Amount needs to be > 0 for Income type & Amount needs to be < 0 for Expense type.",
+    generateReportSuccess: "Report generated and saved!",
+    generateReportError: "Error generating report.",
+    generateReportErrorNoName: "Report needs a name before generating."
+
   } as const;
 
-  constructor(private transactionService: TransactionService, private transactionstateService: TransactionstateService) {
+  constructor(private transactionService: TransactionService, private transactionstateService: TransactionstateService, private transactionreportService: TransactionreportService) {
 
     // new FormGroup for adding a transaction is initialized with each FormControl representing an input field with specific validation constraints for each
     this.addTransaction = new FormGroup({
@@ -99,7 +112,12 @@ export class TransactionsComponent implements OnInit{
       transactionDate: new FormControl('', [Validators.required,  Validators.pattern("^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$")]),
       transactionCategory: new FormControl('', [Validators.required, Validators.pattern("^[A-Za-z]+$")]),
       transactionDescription: new FormControl('', [Validators.required, Validators.maxLength(255), Validators.pattern("^[A-Za-z ]+$")])
-    })
+    });
+
+    this.generateReport = new FormGroup({
+      reportName: new FormControl('', [Validators.required]),
+      reportDescription: new FormControl('')
+    });
   }
 
   /**
@@ -123,6 +141,10 @@ export class TransactionsComponent implements OnInit{
     this.selectedTransactionRowIndex = this.selectedTransactionRowIndex === index ? null : index;
   }
 
+  /**
+   * Checks to see if the transaction type matches the rules of what bounds the transactionAmount
+   * Income has transactionAmount > 0 and Expense has transactionAmount < 0.
+   */
   public checkAmountValidity(): boolean {
 
     if (this.addTransaction.get('transactionType')?.value == "Income" && this.addTransaction.get('transactionAmount')?.value > 0) {
@@ -154,13 +176,22 @@ export class TransactionsComponent implements OnInit{
     }
   }
 
+  /**
+   * Checks if the current array of Transactions displayed within the Transactions component match exactly with the array of Transactions within the transactionstateservice that were last loaded from the db
+   * @param clientTransactions
+   * @param transactionsOnLastSave
+   */
   public isTransactionStateSynced(clientTransactions: Transaction[], transactionsOnLastSave: Transaction[]): boolean{
     return (clientTransactions.length === transactionsOnLastSave.length) && (JSON.stringify(clientTransactions) === JSON.stringify(transactionsOnLastSave));
   }
 
 
+  /**
+   * When user clicks "submit" on the add transactions form this function runs.
+   */
   public onTransactionSubmit() {
 
+    // This conditional is when a user is editing an existing transaction.
     if (this.addTransaction.valid && this.checkAmountValidity() && this.transactionUIState.isEditingExistingTransaction && typeof this.selectedTransactionRowIndex === "number") {
 
       this.transactions[this.selectedTransactionRowIndex] = {
@@ -183,6 +214,7 @@ export class TransactionsComponent implements OnInit{
       return;
     }
 
+    // This conditional runs when user is adding a new transaction and not an existing transaction.
     if (this.addTransaction.valid && this.checkAmountValidity() && !this.transactionUIState.isEditingExistingTransaction) {
 
       const newTransaction: Transaction = {
@@ -203,10 +235,12 @@ export class TransactionsComponent implements OnInit{
       this.transactionUIState.messages.showFormError = false;
       this.transactionUIState.messages.showFormTypeAmountMismatch = false;
 
+      // if transaction fields are valid, but the transaction type doesn't match the transaction amount
     } else if (this.addTransaction.valid && !this.checkAmountValidity()) {
       this.transactionUIState.messages.showFormTypeAmountMismatch = true;
       this.transactionUIState.messages.showFormError = false;
       this.transactionUIState.messages.showFormSuccess = false;
+      // if no fields are valid or any other errors.
     } else {
       this.transactionUIState.messages.showFormError = true;
       this.transactionUIState.messages.showFormSuccess = false;
@@ -221,12 +255,14 @@ export class TransactionsComponent implements OnInit{
 
   }
 
+  // resets add transaction form so no messages are showing.
   public onTransactionReset(): void {
     this.transactionUIState.messages.showFormSuccess = false;
     this.transactionUIState.messages.showFormError = false;
     this.transactionUIState.messages.showFormTypeAmountMismatch = false;
   }
 
+  // resets the add transaction form fields
   public resetAddTransactionForm(): void {
     this.addTransaction.reset({
       transactionType: '',
@@ -401,7 +437,7 @@ export class TransactionsComponent implements OnInit{
     }
   }
 
-  calculateTransactionStats(): void {
+  public calculateTransactionStats(): void {
     this.transactionStats.totalIncome = this.calculateTotalIncome();
     this.transactionStats.totalExpenses = this.calculateTotalExpenses();
     this.transactionStats.totalTransactions = this.calculateTotalTransactions();
@@ -410,7 +446,7 @@ export class TransactionsComponent implements OnInit{
     this.transactionStats.topExpenseCategory = this.calculateTopExpenseCategory();
   }
 
-  onFilter(): void {
+  public onFilter(): void {
     this.transactionUIState.areTransactionsBeingFiltered = true;
     this.transactionUIState.isCrudButtonDisabled = true;
 
@@ -444,7 +480,7 @@ export class TransactionsComponent implements OnInit{
     this.transactions = JSON.parse(JSON.stringify(filteredTransactions));
   }
 
-  onFilterSortReset(): void {
+  public onFilterSortReset(): void {
     this.getTransactions();
     this.transactionFilters.type = "";
     this.transactionFilters.category = "";
@@ -457,6 +493,54 @@ export class TransactionsComponent implements OnInit{
     this.transactionUIState.isCrudButtonDisabled = false;
     this.transactionUIState.sort.isSortButtonDisabled = false;
     this.transactionUIState.sort.isSortSelectionDisabled = false;
+  }
+
+  public onGenerateReport(): void {
+    this.transactionUIState.popup.showGenerateReport = true;
+  }
+
+  public generateTransactionReport(): void {
+
+    if (this.generateReport.valid) {
+
+      const payload = {
+        transactionReportName: this.generateReport.get('reportName')?.value,
+        transactionReportDescription: this.generateReport.get('reportDescription')?.value,
+        transactions: this.transactions
+      };
+
+      this.transactionreportService.saveTransactionReport(payload).subscribe({
+
+        next: (data: any) => {
+          this.transactionUIState.messages.showGenerateReportSuccess = true;
+          this.transactionUIState.messages.showGenerateReportError = false;
+          this.transactionUIState.messages.showGenerateReportErrorNoName = false;
+        },
+
+        error: (err: any) => {
+          this.transactionUIState.messages.showGenerateReportError = true;
+          this.transactionUIState.messages.showGenerateReportSuccess = false;
+        }
+      });
+
+    } else {
+      this.transactionUIState.messages.showGenerateReportErrorNoName = true;
+    }
+
+    setTimeout(() => {
+      this.generateReport.reset({
+        reportName: '',
+        reportDescription: ''
+      });
+    }, 3000);
+
+  }
+
+  public onCloseGenerateReport() {
+    this.transactionUIState.popup.showGenerateReport = false;
+    this.transactionUIState.messages.showGenerateReportSuccess = false;
+    this.transactionUIState.messages.showGenerateReportError = false;
+    this.transactionUIState.messages.showGenerateReportErrorNoName = false;
   }
 
   private calculateTotalIncome(): number {

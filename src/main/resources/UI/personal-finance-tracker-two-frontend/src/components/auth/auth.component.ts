@@ -150,6 +150,10 @@ export class AuthComponent implements OnInit {
         next: (response:any):void => {
           this.signupSuccessResponseMessage = response.message;
           this.signupErrorResponseMessage = "";
+          setTimeout(() =>{
+            this.resetSignupForm();
+            this.signupSuccessResponseMessage = "";
+          }, 5000);
         },
 
         error: (err:any):void => {
@@ -158,6 +162,16 @@ export class AuthComponent implements OnInit {
         }
       });
     }
+  }
+
+  resetSignupForm(){
+    this.signupForm.reset({
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    });
   }
 
   onSignInSubmit():void {

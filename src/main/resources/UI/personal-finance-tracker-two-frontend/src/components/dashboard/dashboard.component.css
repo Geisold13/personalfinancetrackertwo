@@ -12,8 +12,7 @@
 }
 
 .dashboard-content-container {
-  width: 100%;
-  border: 1px solid black;
+  width: 100%;;
   height: 100vh;
 }
 
@@ -57,6 +56,116 @@
 
   border-radius: 10px;
   box-shadow: 0 0 10px gray;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.dashboard__graph-container {
+  width: 760px;
+  height: auto;
+
+  padding-left: 20px;
+  padding-right: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  border-radius: 10px;
+  box-shadow: 0 0 10px gray;
+}
+
+.dashboard__graph-header {
+  margin-top: 20px;
+  font-weight: lighter;
+}
+
+.dashboard__graph-contents {
+  width: 720px;
+  height: 560px;
+
+  display: flex;
+  flex-direction: row;
+}
+
+/*
+.dashboard__graph-yaxis {
+  width: 40px;
+  height: 560px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+*/
+.dashboard__graph-yaxis-label {
+}
+
+.dashboard__graph {
+  width: 720px;
+  height: 560px;
+
+  border: 1px solid black;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+
+  display: flex;
+}
+
+.dashboard__graph-section {
+  width: 60px;
+  height: 560px;
+
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+
+
+.dashboard__graph-data-view-container {
+  width: 60px;
+  height: auto;
+
+  margin: 0;
+  margin-bottom: 1px;
+
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.dashboard__graph-view-data {
+  width: 15px;
+  height: auto;
+
+  margin: 0;
+  margin-bottom: 1px;
+
+  box-shadow: 0 0 10px gray;
+}
+
+.dashboard__graph-xaxis {
+  width: 720px;
+  height: 40px;
+
+  margin: 0;
+
+  display: flex;
+}
+
+.dashboard__graph-xaxis-labels {
+  margin: 0;
+  margin-top: 5px;
+  width: 60px;
+  font-weight: lighter;
 }
 
 .dashboard-bottom-right {
@@ -67,4 +176,55 @@
 
   border-radius: 10px;
   box-shadow: 0 0 10px gray;
+}
+
+
+
+.expense{
+  background-color: rgba(220, 14, 14, 1);
+}
+
+.expense:hover {
+  background-color: rgba(255, 0, 0, 0.84);
+}
+
+.expense-data {
+  color: rgba(220, 14, 14, 1);
+  font-weight: bolder;
+}
+
+.expense-data:hover {
+  color: rgba(255, 0, 0, 0.84);
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.income{
+  background-color: rgba(27, 166, 30, 1);
+}
+
+.income:hover {
+  background-color: rgba(35, 223, 38, 1);
+}
+
+.income-data {
+  color: rgba(27, 166, 30, 1);
+  font-weight: bolder;
+}
+
+.income-data:hover {
+  color: rgba(35, 223, 38, 1);
+  font-size: 16px;
+  cursor: pointer;
+
+}
+
+.net-income {
+  color: midnightblue;
+  font-weight: bolder;
+}
+
+.net-income:hover {
+  font-size: 16px;
+  cursor: pointer;
 }

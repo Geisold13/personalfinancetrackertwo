@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Transaction} from "../../models/transaction.model";
+import {TransactionService} from "../transaction-service/transaction.service";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +10,7 @@ export class TransactionstateService {
 
   private transactions: Transaction[] = [];
 
-  constructor() { }
+  constructor(private transactionService: TransactionService) { }
 
   addTransaction(transaction: Transaction) {
     this.transactions.push(transaction);
@@ -24,5 +26,9 @@ export class TransactionstateService {
 
   clearTransactions() {
     this.transactions = [];
+  }
+
+  public fetchTransactions(): Observable<Transaction[]> {
+    return this.transactionService.getTransactions();
   }
 }

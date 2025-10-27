@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Router, RouterLink, RouterOutlet} from '@angular/router';
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {AuthComponent} from "../auth/auth.component";
-import {NgIf} from "@angular/common";
+import {NgIf, NgOptimizedImage, NgStyle} from "@angular/common";
 import {HttpClient, HttpClientModule, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import {DashboardComponent} from "../dashboard/dashboard.component";
 
@@ -15,14 +15,13 @@ import {AppstateService} from "../../services/appstate-service/appstate.service"
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, AuthComponent, NgIf, HttpClientModule, DashboardComponent, TransactionsComponent, RouterLink],
+  imports: [RouterOutlet, AuthComponent, NgIf, HttpClientModule, DashboardComponent, TransactionsComponent, RouterLink, NgStyle, RouterLinkActive, NgOptimizedImage],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit{
   title = 'personal-finance-tracker-two-frontend';
   user: string = "";
-
 
 
   constructor(protected jwtService: JwtService, private userService: UserService, private transactionstateService: TransactionstateService, private appstateService: AppstateService, private router: Router) {

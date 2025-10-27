@@ -3,7 +3,7 @@ spring:
   application:
     name: personal-finance-tracker-two
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/personal_finance_application_two
+    url: jdbc:mysql://personal-finance-tracker-db.c6jo8igqw84t.us-east-1.rds.amazonaws.com:3306/personal_finance_tracker_two_db?useSSL=true&requireSSL=true&verifyServerCertificate=false
     username: Geisold13
     password: geballer1313B
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -26,3 +26,17 @@ spring:
   docker:
     compose:
       enabled: false
+
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

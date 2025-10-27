@@ -25,7 +25,7 @@
             <button class="transaction__crud-button" [disabled]="transactionUIState.isCrudButtonDisabled" (click)="onSaveTransactions()">Save Transactions</button>
             <button class="transaction__crud-button" [disabled]="transactionUIState.isCrudButtonDisabled"  (click)="onDeleteTransaction()">Delete Transaction</button>
             <button class="transaction__crud-button" [disabled]="transactionUIState.isCrudButtonDisabled"  (click)="onEditTransaction()">Edit Transaction</button>
-            <button class="transaction__crud-button generate-report__button">Generate Report</button>
+            <button class="transaction__crud-button generate-report__button" (click)="onGenerateReport()">Generate Report</button>
           </div>
           <div class="transaction__crud-messages">
             <small class="success" *ngIf="transactionUIState.messages.showInSync">{{transactionMessages.transactionInSync}}</small>
@@ -185,6 +185,21 @@
 
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="transaction__report-container" *ngIf="transactionUIState.popup.showGenerateReport">
+    <div class="transaction__report">
+      <h5 class="transaction__report-header">Generate Report</h5>
+      <form [formGroup]="generateReport" class="transaction__report-form">
+        <input formControlName="reportName" class="transaction__report-input" type="text" placeholder="Report Name">
+        <textarea formControlName="reportDescription" class="transaction__report-textarea" rows='5' cols="40" placeholder="Report Description"></textarea>
+      </form>
+      <button class="transaction__report-button generate-report__button" (click)="generateTransactionReport()">Generate Report</button>
+      <button class="transaction__report-button reset" (click)="onCloseGenerateReport()" >Close</button>
+      <small class="error" *ngIf="transactionUIState.messages.showGenerateReportErrorNoName">{{transactionMessages.generateReportErrorNoName}}</small>
+      <small class="success" *ngIf="transactionUIState.messages.showGenerateReportSuccess">{{transactionMessages.generateReportSuccess}}</small>
+      <small class="error" *ngIf="transactionUIState.messages.showGenerateReportError">{{transactionMessages.generateReportError}}</small>
     </div>
   </div>
 </div>

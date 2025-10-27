@@ -58,6 +58,11 @@
   color: black;
 }
 
+.navigation-button.active {
+  background-color: var(--primary-auth-color-light-three);
+
+}
+
 .navigation-account-buttons {
   display: flex;
   flex-direction: column;

@@ -1,15 +1,66 @@
 <div class="dashboard-container">
   <div class="dashboard-content-container">
     <div class="dashboard-top-row">
-      <div class="dashboard-top-row-item"></div>
-      <div class="dashboard-top-row-item"></div>
-      <div class="dashboard-top-row-item"></div>
-      <div class="dashboard-top-row-item"></div>
+      <div class="dashboard-top-row-item">
+        <h6>Today</h6>
+      </div>
+      <div class="dashboard-top-row-item">
+        <h6>Week to Date</h6>
+      </div>
+      <div class="dashboard-top-row-item">
+        <h6>Month to Date</h6>
+      </div>
+      <div class="dashboard-top-row-item">
+        <h6>Year to Date</h6>
+      </div>
       <div class="dashboard-top-row-item"></div>
       <div class="dashboard-top-row-item"></div>
     </div>
     <div class="dashboard-bottom">
-        <div class="dashboard-bottom-left"></div>
+        <div class="dashboard-bottom-left">
+          <div class="dashboard__graph-container">
+            <h5 class="dashboard__graph-header">YTD Income and Expenses</h5>
+            <div class="dashboard__graph-contents">
+              <div class="dashboard__graph-yaxis">
+                <p class="dashboard__graph-yaxis-label"></p>
+                <p class="dashboard__graph-yaxis-label"></p>
+                <p class="dashboard__graph-yaxis-label"></p>
+                <p class="dashboard__graph-yaxis-label"></p>
+                <p class="dashboard__graph-yaxis-label"></p>
+                <p class="dashboard__graph-yaxis-label"></p>
+                <p class="dashboard__graph-yaxis-label"></p>
+                <p class="dashboard__graph-yaxis-label"></p>
+                <p class="dashboard__graph-yaxis-label"></p>
+                <p class="dashboard__graph-yaxis-label"></p>
+              </div>
+              <div class="dashboard__graph">
+                <div class="dashboard__graph-section" *ngFor="let _ of [].constructor(12); let i = index">
+                  <small class="dashboard__graph-data income-data">+{{incomeByMonth[i]}}</small>
+                  <small class="dashboard__graph-data expense-data">-{{expenseByMonth[i]}}</small>
+                  <small class="net-income">{{incomeByMonth[i] - expenseByMonth[i]}}</small>
+                  <div class="dashboard__graph-data-view-container">
+                    <div class="dashboard__graph-view-data income" [style.height.px]="incomeByMonth[i] / 10"></div>
+                    <div class="dashboard__graph-view-data expense" [style.height.px]="expenseByMonth[i] / 10"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <div class="dashboard__graph-xaxis">
+                <h6 class="dashboard__graph-xaxis-labels">Jan</h6>
+                <h6 class="dashboard__graph-xaxis-labels">Feb</h6>
+                <h6 class="dashboard__graph-xaxis-labels">Mar</h6>
+                <h6 class="dashboard__graph-xaxis-labels">Apr</h6>
+                <h6 class="dashboard__graph-xaxis-labels">May</h6>
+                <h6 class="dashboard__graph-xaxis-labels">Jun</h6>
+                <h6 class="dashboard__graph-xaxis-labels">Jul</h6>
+                <h6 class="dashboard__graph-xaxis-labels">Aug</h6>
+                <h6 class="dashboard__graph-xaxis-labels">Sep</h6>
+                <h6 class="dashboard__graph-xaxis-labels">Oct</h6>
+                <h6 class="dashboard__graph-xaxis-labels">Nov</h6>
+                <h6 class="dashboard__graph-xaxis-labels">Dec</h6>
+              </div>
+            </div>
+          </div>
         <div class="dashboard-bottom-right"></div>
     </div>
   </div>
